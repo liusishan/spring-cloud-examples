@@ -2,6 +2,7 @@ package com.lss;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
@@ -10,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
  * @Date: 2019/3/30 15:27
  * @Description:
  */
+@EnableDiscoveryClient
 @SpringBootApplication
 public class ConsumerApplication {
 

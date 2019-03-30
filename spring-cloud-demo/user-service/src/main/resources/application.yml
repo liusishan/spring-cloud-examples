@@ -1,6 +1,8 @@
 server:
   port: 8089
 spring:
+  application:
+    name: user-service
   datasource:
     url: jdbc:mysql://localhost:3306/vuejsdemo?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2B8
     username: root
@@ -9,3 +11,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
   type-aliases-package: com.lss.user.pojo
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka

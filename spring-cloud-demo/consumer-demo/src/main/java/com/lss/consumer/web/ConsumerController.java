@@ -35,6 +35,7 @@ public class ConsumerController {
         ServiceInstance instance = instances.get(0);
 
         String url = "http://" + instance.getHost() + ":" + instance.getPort() + "/user/" + id;
+        System.out.println(url);
         User user = restTemplate.getForObject(url, User.class);
         return user;
     }

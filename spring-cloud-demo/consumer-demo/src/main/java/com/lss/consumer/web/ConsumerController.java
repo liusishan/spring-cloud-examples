@@ -1,6 +1,7 @@
 package com.lss.consumer.web;
 
 import com.lss.consumer.pojo.User;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -45,16 +46,28 @@ public class ConsumerController {
 //        return user;
 //    }
 
+    //    @GetMapping("{id}")
+//    public User queryById(@PathVariable Integer id) {
+//
+////        ServiceInstance instance = client.choose("user-service");
+////        String url = "http://" + instance.getHost() + ":" + instance.getPort() + "/user/" + id;
+////        System.out.println(url);
+//
+//        String url = "http://user-service/user/" + id;
+//        User user = restTemplate.getForObject(url, User.class);
+//        return user;
+//    }
+
     @GetMapping("{id}")
-    public User queryById(@PathVariable Integer id) {
-
-//        ServiceInstance instance = client.choose("user-service");
-//        String url = "http://" + instance.getHost() + ":" + instance.getPort() + "/user/" + id;
-//        System.out.println(url);
-
+    @HystrixCommand(fallbackMethod = "queryByIdFallback")
+    public String queryById(@PathVariable Integer id) {
         String url = "http://user-service/user/" + id;
-        User user = restTemplate.getForObject(url, User.class);
+        String user = restTemplate.getForObject(url, String.class);
         return user;
+    }
+
+    public String queryByIdFallback(Integer id) {
+        return "不好意思，服务器太拥挤了";
     }
 
 }

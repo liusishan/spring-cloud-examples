@@ -12,3 +12,11 @@ eureka:
   instance:
       prefer-ip-address: true
       ip-address: 127.0.0.1
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 2000

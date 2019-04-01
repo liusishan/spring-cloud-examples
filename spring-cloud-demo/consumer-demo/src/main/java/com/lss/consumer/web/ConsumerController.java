@@ -63,10 +63,11 @@ public class ConsumerController {
 
     @GetMapping("{id}")
 //    @HystrixCommand(fallbackMethod = "queryByIdFallback")
-    @HystrixCommand(commandProperties = {
-            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",
-                    value = "2000")
-    })
+//    @HystrixCommand(commandProperties = {
+//            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",
+//                    value = "3000")
+//    })
+    @HystrixCommand
     public String queryById(@PathVariable Integer id) {
         String url = "http://user-service/user/" + id;
         String user = restTemplate.getForObject(url, String.class);

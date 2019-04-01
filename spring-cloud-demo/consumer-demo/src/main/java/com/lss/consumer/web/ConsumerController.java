@@ -1,6 +1,7 @@
 package com.lss.consumer.web;
 
 import com.lss.consumer.pojo.User;
+import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -21,6 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("consumer")
+@DefaultProperties(defaultFallback = "defaultFallback")
 public class ConsumerController {
 
     @Autowired
@@ -59,7 +61,8 @@ public class ConsumerController {
 //    }
 
     @GetMapping("{id}")
-    @HystrixCommand(fallbackMethod = "queryByIdFallback")
+//    @HystrixCommand(fallbackMethod = "queryByIdFallback")
+    @HystrixCommand
     public String queryById(@PathVariable Integer id) {
         String url = "http://user-service/user/" + id;
         String user = restTemplate.getForObject(url, String.class);
@@ -70,4 +73,7 @@ public class ConsumerController {
         return "不好意思，服务器太拥挤了";
     }
 
+    public String defaultFallback() {
+        return "不好意思，服务器太拥挤了";
+    }
 }

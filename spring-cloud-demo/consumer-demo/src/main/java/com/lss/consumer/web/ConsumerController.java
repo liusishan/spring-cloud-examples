@@ -3,6 +3,7 @@ package com.lss.consumer.web;
 import com.lss.consumer.pojo.User;
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -62,7 +63,10 @@ public class ConsumerController {
 
     @GetMapping("{id}")
 //    @HystrixCommand(fallbackMethod = "queryByIdFallback")
-    @HystrixCommand
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",
+                    value = "2000")
+    })
     public String queryById(@PathVariable Integer id) {
         String url = "http://user-service/user/" + id;
         String user = restTemplate.getForObject(url, String.class);

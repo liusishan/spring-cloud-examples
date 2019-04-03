@@ -1,13 +1,9 @@
 package com.lss.consumer.web;
 
-import com.lss.consumer.pojo.User;
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.cloud.netflix.ribbon.RibbonLoadBalancerClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,8 +63,18 @@ public class ConsumerController {
 //            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",
 //                    value = "3000")
 //    })
-    @HystrixCommand
+    @HystrixCommand(
+            commandProperties = {
+                    @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
+                    @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "10000"),
+                    @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "60"),
+
+            }
+    )
     public String queryById(@PathVariable Integer id) {
+        if (id % 2 == 0) {
+            throw new RuntimeException("");
+        }
         String url = "http://user-service/user/" + id;
         String user = restTemplate.getForObject(url, String.class);
         return user;

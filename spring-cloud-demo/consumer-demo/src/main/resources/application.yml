@@ -12,11 +12,22 @@ eureka:
   instance:
       prefer-ip-address: true
       ip-address: 127.0.0.1
-
 hystrix:
   command:
     default:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 2000
+            timeoutInMilliseconds: 3000
+feign:
+  hystrix:
+    enabled: true
+ribbon:
+  # 超时时长
+  ConnectionTimeOut: 500
+  # 读取超时时长
+  ReadTimeOut: 2000
+
+logging:
+  level:
+   com.lss: debug

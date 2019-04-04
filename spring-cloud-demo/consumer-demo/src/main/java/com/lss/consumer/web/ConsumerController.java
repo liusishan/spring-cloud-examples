@@ -2,9 +2,6 @@ package com.lss.consumer.web;
 
 import com.lss.consumer.client.UserClient;
 import com.lss.consumer.pojo.User;
-import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +18,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("consumer")
-@DefaultProperties(defaultFallback = "defaultFallback")
 public class ConsumerController {
 
     @Autowired

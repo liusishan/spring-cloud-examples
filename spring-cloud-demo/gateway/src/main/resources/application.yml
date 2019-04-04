@@ -1,7 +1,11 @@
 server:
   port: 10010
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
 zuul:
   routes:
     hehe: # key 可以随意
       path: /user-service/**
-      url: http://127.0.0.1:8089
+      serviceId: user-service

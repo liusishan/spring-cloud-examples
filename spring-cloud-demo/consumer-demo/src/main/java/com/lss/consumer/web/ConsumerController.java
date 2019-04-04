@@ -1,5 +1,7 @@
 package com.lss.consumer.web;
 
+import com.lss.consumer.client.UserClient;
+import com.lss.consumer.pojo.User;
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
@@ -23,7 +25,9 @@ import java.util.List;
 public class ConsumerController {
 
     @Autowired
-    private RestTemplate restTemplate;
+    private UserClient userClient;
+//    @Autowired
+//    private RestTemplate restTemplate;
 
 //    @Autowired
 //    private RibbonLoadBalancerClient client;
@@ -57,28 +61,33 @@ public class ConsumerController {
 //        return user;
 //    }
 
-    @GetMapping("{id}")
+//    @GetMapping("{id}")
 //    @HystrixCommand(fallbackMethod = "queryByIdFallback")
 //    @HystrixCommand(commandProperties = {
 //            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",
 //                    value = "3000")
 //    })
-    @HystrixCommand(
-            commandProperties = {
-                    @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
-                    @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "10000"),
-                    @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "60"),
+//    @HystrixCommand(
+//            commandProperties = {
+//                    @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
+//                    @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "10000"),
+//                    @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "60")
+//            }
+//    )
+//    public String queryById(@PathVariable Integer id) {
+//        if (id % 2 == 0) {
+//            throw new RuntimeException("");
+//        }
+//        String url = "http://user-service/user/" + id;
+//        String user = restTemplate.getForObject(url, String.class);
+//        return user;
+//    }
 
-            }
-    )
-    public String queryById(@PathVariable Integer id) {
-        if (id % 2 == 0) {
-            throw new RuntimeException("");
-        }
-        String url = "http://user-service/user/" + id;
-        String user = restTemplate.getForObject(url, String.class);
-        return user;
+    @GetMapping("{id}")
+    public User queryById(@PathVariable Integer id) {
+        return userClient.queryById(id);
     }
+
 
     public String queryByIdFallback(Integer id) {
         return "不好意思，服务器太拥挤了";

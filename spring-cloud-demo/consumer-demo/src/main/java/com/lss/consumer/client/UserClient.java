@@ -15,5 +15,4 @@ public interface UserClient {
 
     @GetMapping("user/{id}")
     User queryById(@PathVariable("id") Integer id);
-
 }
